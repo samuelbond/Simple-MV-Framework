@@ -14,7 +14,9 @@ use application\BaseController;
 class indexController extends BaseController{
 
     public function index(){
-        $this->registry->template->loadView("index");
+
+
+        $this->registry->template->loadView("content");
     }
 
 } 

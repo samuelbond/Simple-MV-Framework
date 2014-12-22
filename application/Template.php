@@ -62,18 +62,18 @@ class Template {
 
     /**
      * Loads a given view e.g view(index) where index.php
-     * @param $viewname
+     * @param $viewName
      * @param bool $useHeaderAndFooter
      * @throws TemplateException
      * @return bool
      */
-    public function loadView($viewname, $useHeaderAndFooter = false)
+    public function loadView($viewName, $useHeaderAndFooter = true)
     {
-        $viewfile = $this->path.$viewname.".php";
+        $viewFile = $this->path.$viewName.".php";
 
         try
         {
-            if(!file_exists($viewfile))
+            if(!file_exists($viewFile))
             {
                 throw new TemplateException("Template view not found!");
             }
@@ -83,16 +83,31 @@ class Template {
                 $$nameOfVariable = $valueOfVariable;
             }
 
-            if($useHeaderAndFooter) include $this->registry->header;
+            if($useHeaderAndFooter)
+            {
+                $header = $this->path."header.view.php";
 
-            include $viewfile;
+                if(file_exists($header))
+                {
+                    include_once $header;
+                }
+            }
 
-           if($useHeaderAndFooter) include $this->registry->footer;
+            include_once $viewFile;
+
+            if($useHeaderAndFooter)
+            {
+                $footer = $this->path."footer.view.php";
+
+                if(file_exists($footer))
+                {
+                    include_once $footer;
+                }
+            }
 
         }catch (\Exception $ex)
         {
            echo $ex->getMessage();
-           return false;
         }
     }
 
